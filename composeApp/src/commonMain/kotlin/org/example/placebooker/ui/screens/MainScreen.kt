@@ -25,6 +25,7 @@ class MainScreen : Screen {
         val places by viewModel.places.collectAsState()
         val searchText by viewModel.searchQuery.collectAsState()
         val selectedCategory by viewModel.selectedCategory.collectAsState()
+        val isSorted by viewModel.sortByRating.collectAsState()
 
         Scaffold(
             topBar = {
@@ -32,31 +33,23 @@ class MainScreen : Screen {
                 TopAppBar(
                     title = { Text(Res.Strings.APP_NAME) },
                     actions = {
-                        IconButton(onClick = { navigator.push(ProfileScreen()) }) {
-                            Icon(Icons.Default.Person, null)
-                        }
+                        Text("ТОП", style = MaterialTheme.typography.labelSmall)
+                        Switch(checked = isSorted, onCheckedChange = { viewModel.sortByRating.value = it })
+                        IconButton(onClick = { navigator.push(ProfileScreen()) }) { Icon(Icons.Default.Person, null) }
                     }
                 )
             }
         ) { padding ->
             Column(modifier = Modifier.fillMaxSize().padding(padding).padding(horizontal = 16.dp)) {
-                // ТЕПЕРЬ ПОИСК РАБОТАЕТ
                 OutlinedTextField(
                     value = searchText,
                     onValueChange = { viewModel.searchQuery.value = it },
                     label = { Text(Res.Strings.SEARCH_PLACES) },
                     modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp)
                 )
-
-                FilterBar(
-                    selectedCategory = selectedCategory,
-                    onCategorySelected = { viewModel.selectedCategory.value = it }
-                )
-
+                FilterBar(selectedCategory = selectedCategory, onCategorySelected = { viewModel.selectedCategory.value = it })
                 LazyColumn(modifier = Modifier.fillMaxSize()) {
-                    items(places) { place ->
-                        PlaceCard(place = place, onClick = { navigator.push(DetailsScreen(place)) })
-                    }
+                    items(places) { place -> PlaceCard(place = place, onClick = { navigator.push(DetailsScreen(place)) }) }
                 }
             }
         }
