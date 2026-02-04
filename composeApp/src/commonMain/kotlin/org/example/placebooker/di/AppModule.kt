@@ -1,19 +1,17 @@
 package org.example.placebooker.di
 
 import org.koin.dsl.module
+import org.example.placebooker.domain.repository.PlaceRepository
+import org.example.placebooker.ui.auth.LoginViewModel
+import org.example.placebooker.ui.main.MainViewModel
+import org.example.placebooker.presentation.features.details.DetailsViewModel
 
-// Здесь будут жить все зависимости нашего приложения
 val appModule = module {
-    
-    // 1. Сетевой слой (Ktor) - добавим позже
-    
-    // 2. База данных (SQLDelight) - добавим позже
-    
-    // 3. ViewModels (по одной для каждого из 24 модулей)
-    // factory { LoginViewModel(get()) }
-}
+    // Singletons (Репозитории)
+    single { PlaceRepository() }
 
-// Функция для инициализации Koin на разных платформах
-fun initKoin(appDeclaration: () -> Unit = {}) {
-    // Эта функция будет вызываться в Android (MainActivity) и iOS (MainViewController)
+    // ViewModels (Регистрируем как factory, чтобы создавались при входе на экран)
+    factory { LoginViewModel() }
+    factory { MainViewModel(get()) }
+    factory { DetailsViewModel(get()) }
 }

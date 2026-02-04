@@ -7,6 +7,8 @@ import org.example.placebooker.ui.auth.LoginScreen
 import org.example.placebooker.ui.theme.PlaceBookerTheme
 
 @Composable
+    // Koin инициализируется один раз при старте
+    org.koin.compose.KoinContext { 
 fun App() {
     PlaceBookerTheme {
         // Оборачиваем навигатор в SlideTransition для плавности
