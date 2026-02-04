@@ -9,6 +9,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.currentOrThrow
 import org.example.placebooker.core.resources.Res
 import org.example.placebooker.ui.main.MainViewModel
 import org.example.placebooker.ui.components.PlaceCard
@@ -18,6 +20,7 @@ class MainScreen : Screen {
     @Composable
     override fun Content() {
         val viewModel = getScreenModel<MainViewModel>()
+        val navigator = LocalNavigator.currentOrThrow
         val places by viewModel.places.collectAsState(emptyList())
         val selectedCategory by viewModel.selectedCategory.collectAsState()
 
@@ -25,15 +28,13 @@ class MainScreen : Screen {
             topBar = { @OptIn(ExperimentalMaterial3Api::class) TopAppBar(title = { Text(Res.Strings.APP_NAME) }) }
         ) { padding ->
             Column(modifier = Modifier.fillMaxSize().padding(padding).padding(horizontal = 16.dp)) {
-                // ПАНЕЛЬ ФИЛЬТРОВ
                 FilterBar(
                     selectedCategory = selectedCategory,
                     onCategorySelected = { viewModel.selectedCategory.value = it }
                 )
-
                 LazyColumn(modifier = Modifier.fillMaxSize()) {
                     items(places) { place ->
-                        PlaceCard(place = place, onClick = { /* Детали */ })
+                        PlaceCard(place = place, onClick = { navigator.push(DetailsScreen(place)) })
                     }
                 }
             }
