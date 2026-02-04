@@ -42,7 +42,7 @@ data class DetailsScreen(val place: Place) : Screen {
                 Text(text = "Адрес", style = MaterialTheme.typography.titleMedium)
                 Text(text = place.address, style = MaterialTheme.typography.bodyMedium)
                 Spacer(modifier = Modifier.weight(1f))
-                Button(onClick = { navigator.push(SuccessBookingScreen()) }, modifier = Modifier.fillMaxWidth().height(56.dp)) {
+                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) { OutlinedButton(onClick = { /* Тут будет вызов */ }, modifier = Modifier.weight(1f)) { Icon(androidx.compose.material.icons.Icons.Default.Call, null); Text("Позвонить") }; Button(onClick = { navigator.push(SuccessBookingScreen()) }, modifier = Modifier.weight(1f)), modifier = Modifier.fillMaxWidth().height(56.dp)) {
                     Text(Res.Strings.BOOK_NOW)
                 }
             }
