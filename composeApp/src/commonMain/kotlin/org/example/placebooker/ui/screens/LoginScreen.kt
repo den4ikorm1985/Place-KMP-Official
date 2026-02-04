@@ -9,14 +9,16 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.currentOrThrow
 import org.example.placebooker.core.resources.Res
 import org.example.placebooker.ui.auth.LoginViewModel
 
 class LoginScreen : Screen {
     @Composable
     override fun Content() {
-        // Получаем нашу ViewModel через Koin
         val viewModel = getScreenModel<LoginViewModel>()
+        val navigator = LocalNavigator.currentOrThrow // Получаем доступ к навигатору
         
         val email by viewModel.email.collectAsState()
         val password by viewModel.password.collectAsState()
@@ -31,7 +33,6 @@ class LoginScreen : Screen {
             
             Spacer(modifier = Modifier.height(32.dp))
 
-            // Поле Почты
             OutlinedTextField(
                 value = email,
                 onValueChange = { viewModel.email.value = it },
@@ -41,7 +42,6 @@ class LoginScreen : Screen {
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Поле Пароля
             OutlinedTextField(
                 value = password,
                 onValueChange = { viewModel.password.value = it },
@@ -50,18 +50,17 @@ class LoginScreen : Screen {
                 modifier = Modifier.fillMaxWidth()
             )
 
-            // Вывод ошибки, если она есть
             error?.let {
                 Text(text = it, color = MaterialTheme.colorScheme.error, modifier = Modifier.padding(top = 8.dp))
             }
 
             Spacer(modifier = Modifier.height(32.dp))
 
-            // Кнопка Входа
             Button(
                 onClick = { 
                     viewModel.onLoginClick {
-                        // Сюда добавим переход на главный экран в следующем шаге
+                        // Если валидация прошла — летим на главный экран!
+                        navigator.push(MainScreen())
                     }
                 },
                 modifier = Modifier.fillMaxWidth()
