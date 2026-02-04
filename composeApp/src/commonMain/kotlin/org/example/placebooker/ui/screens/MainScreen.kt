@@ -3,6 +3,8 @@ package org.example.placebooker.ui.screens
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -25,7 +27,17 @@ class MainScreen : Screen {
         val selectedCategory by viewModel.selectedCategory.collectAsState()
 
         Scaffold(
-            topBar = { @OptIn(ExperimentalMaterial3Api::class) TopAppBar(title = { Text(Res.Strings.APP_NAME) }) }
+            topBar = {
+                @OptIn(ExperimentalMaterial3Api::class)
+                TopAppBar(
+                    title = { Text(Res.Strings.APP_NAME) },
+                    actions = {
+                        IconButton(onClick = { navigator.push(ProfileScreen()) }) {
+                            Icon(Icons.Default.Person, contentDescription = "Профиль")
+                        }
+                    }
+                )
+            }
         ) { padding ->
             Column(modifier = Modifier.fillMaxSize().padding(padding).padding(horizontal = 16.dp)) {
                 FilterBar(
