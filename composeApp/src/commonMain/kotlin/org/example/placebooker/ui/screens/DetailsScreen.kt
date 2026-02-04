@@ -16,14 +16,14 @@ import org.example.placebooker.core.resources.Res
 data class DetailsScreen(val place: Place) : Screen {
     @Composable
     override fun Content() {
-        val navigator = LocalNavigator.currentOrThrow
+        val navigator = LocalNavigator.currentOrThrow; val haptic = androidx.compose.ui.platform.LocalHapticFeedback.current
         Scaffold(
             topBar = {
                 @OptIn(ExperimentalMaterial3Api::class)
                 TopAppBar(
-                    title = { Text(place.name) }, actions = { IconButton(onClick = { /* Share logic */ }) { Icon(androidx.compose.material.icons.Icons.Default.Share, null) } },
+                    title = { Text(place.name) }, actions = { IconButton(onClick = { haptic.performHapticFeedback(androidx.compose.ui.hapticfeedback.HapticFeedbackType.LongPress); /* Share logic */ }) { Icon(androidx.compose.material.icons.Icons.Default.Share, null) } },
                     navigationIcon = {
-                        IconButton(onClick = { navigator.pop() }) {
+                        IconButton(onClick = { haptic.performHapticFeedback(androidx.compose.ui.hapticfeedback.HapticFeedbackType.LongPress); navigator.pop() }) {
                             Icon(Icons.Default.ArrowBack, contentDescription = null)
                         }
                     }
@@ -42,7 +42,7 @@ data class DetailsScreen(val place: Place) : Screen {
                 Text(text = "Адрес", style = MaterialTheme.typography.titleMedium)
                 Text(text = place.address, style = MaterialTheme.typography.bodyMedium) }
                 Spacer(modifier = Modifier.weight(1f))
-                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) { OutlinedButton(onClick = { /* Тут будет вызов */ }, modifier = Modifier.weight(1f)) { Icon(androidx.compose.material.icons.Icons.Default.Call, null); Text("Позвонить") }; Button(onClick = { navigator.push(BookingCalendarScreen()) }, modifier = Modifier.weight(1f)), modifier = Modifier.fillMaxWidth().height(56.dp)) {
+                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) { OutlinedButton(onClick = { haptic.performHapticFeedback(androidx.compose.ui.hapticfeedback.HapticFeedbackType.LongPress); /* Тут будет вызов */ }, modifier = Modifier.weight(1f)) { Icon(androidx.compose.material.icons.Icons.Default.Call, null); Text("Позвонить") }; Button(onClick = { haptic.performHapticFeedback(androidx.compose.ui.hapticfeedback.HapticFeedbackType.LongPress); navigator.push(BookingCalendarScreen()) }, modifier = Modifier.weight(1f)), modifier = Modifier.fillMaxWidth().height(56.dp)) {
                     Text(Res.Strings.BOOK_NOW)
                 }
             }
