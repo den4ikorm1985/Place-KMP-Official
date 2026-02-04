@@ -33,7 +33,7 @@ class ProfileScreen : Screen {
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Icon(Icons.Default.AccountCircle, null, modifier = Modifier.size(80.dp), tint = MaterialTheme.colorScheme.primary)
-                Text("Денис", style = MaterialTheme.typography.headlineSmall)
+                IconButton(onClick = { navigator.push(EditProfileScreen()) }) { Icon(androidx.compose.material.icons.Icons.Default.Edit, null) }; Text("Денис", style = MaterialTheme.typography.headlineSmall)
                 
                 Spacer(modifier = Modifier.height(32.dp))
 
