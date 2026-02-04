@@ -39,7 +39,7 @@ class MainScreen : Screen {
                     title = { Text(Res.Strings.APP_NAME) },
                     actions = {
                         Text("ТОП", style = MaterialTheme.typography.labelSmall)
-                        Switch(checked = isSorted, onCheckedChange = { viewModel.sortByRating.value = it })
+                        Switch(checked = isSorted, onCheckedChange = { val valNew = it; viewModel.sortByRating.value = valNew; scope.launch { snackbarHostState.showSnackbar(if(valNew) "Показываем только лучшие места" else "Показываем все места") } })
                         IconButton(onClick = { navigator.push(ProfileScreen()) }) { Icon(Icons.Default.Person, null) }
                     }
                 )
