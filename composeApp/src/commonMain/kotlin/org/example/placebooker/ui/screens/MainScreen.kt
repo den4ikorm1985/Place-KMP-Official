@@ -15,15 +15,15 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import org.example.placebooker.core.resources.Res
 import org.example.placebooker.ui.main.MainViewModel
-import org.example.placebooker.ui.components.PlaceCard
-import org.example.placebooker.ui.components.FilterBar
+import org.example.placebooker.ui.components.*
 
 class MainScreen : Screen {
     @Composable
     override fun Content() {
         val viewModel = getScreenModel<MainViewModel>()
         val navigator = LocalNavigator.currentOrThrow
-        val places by viewModel.places.collectAsState(emptyList())
+        val places by viewModel.places.collectAsState()
+        val searchText by viewModel.searchQuery.collectAsState()
         val selectedCategory by viewModel.selectedCategory.collectAsState()
 
         Scaffold(
@@ -33,17 +33,26 @@ class MainScreen : Screen {
                     title = { Text(Res.Strings.APP_NAME) },
                     actions = {
                         IconButton(onClick = { navigator.push(ProfileScreen()) }) {
-                            Icon(Icons.Default.Person, contentDescription = "Профиль")
+                            Icon(Icons.Default.Person, null)
                         }
                     }
                 )
             }
         ) { padding ->
             Column(modifier = Modifier.fillMaxSize().padding(padding).padding(horizontal = 16.dp)) {
+                // ТЕПЕРЬ ПОИСК РАБОТАЕТ
+                OutlinedTextField(
+                    value = searchText,
+                    onValueChange = { viewModel.searchQuery.value = it },
+                    label = { Text(Res.Strings.SEARCH_PLACES) },
+                    modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp)
+                )
+
                 FilterBar(
                     selectedCategory = selectedCategory,
                     onCategorySelected = { viewModel.selectedCategory.value = it }
                 )
+
                 LazyColumn(modifier = Modifier.fillMaxSize()) {
                     items(places) { place ->
                         PlaceCard(place = place, onClick = { navigator.push(DetailsScreen(place)) })

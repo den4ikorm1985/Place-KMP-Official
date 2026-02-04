@@ -1,20 +1,26 @@
 package org.example.placebooker.ui.main
 
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.combine
-import org.example.placebooker.domain.models.Place
-import org.example.placebooker.domain.models.PlaceCategory
-import org.example.placebooker.domain.models.GeoPoint
+import kotlinx.coroutines.flow.*
+import org.example.placebooker.domain.models.*
 
 class MainViewModel {
     private val _allPlaces = MutableStateFlow<List<Place>>(emptyList())
+    
+    val searchQuery = MutableStateFlow("")
     val selectedCategory = MutableStateFlow<PlaceCategory?>(null)
 
-    // Автоматически фильтруем список, когда меняется категория
-    val places: StateFlow<List<Place>> = combine(_allPlaces, selectedCategory) { all, category ->
-        if (category == null) all else all.filter { it.category == category }
-    }.let { MutableStateFlow(emptyList()) } // Упрощенно для примера
+    // Магия реактивности: следим и за поиском, и за фильтром одновременно
+    val places: StateFlow<List<Place>> = combine(_allPlaces, searchQuery, selectedCategory) { all, query, category ->
+        all.filter { place ->
+            val matchesQuery = place.name.contains(query, ignoreCase = true)
+            val matchesCategory = category == null || place.category == category
+            matchesQuery && matchesCategory
+        }
+    }.stateIn(
+        scope = kotlinx.coroutines.MainScope(),
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = emptyList()
+    )
 
     init {
         loadMockPlaces()
