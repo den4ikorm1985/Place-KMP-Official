@@ -2,8 +2,7 @@ package org.example.placebooker.ui.screens
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -12,21 +11,19 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import org.example.placebooker.core.resources.Res
 
 class ProfileScreen : Screen {
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
+
         Scaffold(
             topBar = {
                 @OptIn(ExperimentalMaterial3Api::class)
                 TopAppBar(
-                    title = { Text("Профиль") },
+                    title = { Text("Мой профиль") },
                     navigationIcon = {
-                        IconButton(onClick = { navigator.pop() }) {
-                            Icon(Icons.Default.ArrowBack, contentDescription = null)
-                        }
+                        IconButton(onClick = { navigator.pop() }) { Icon(Icons.Default.ArrowBack, null) }
                     }
                 )
             }
@@ -35,15 +32,27 @@ class ProfileScreen : Screen {
                 modifier = Modifier.fillMaxSize().padding(padding).padding(16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Icon(Icons.Default.Person, null, modifier = Modifier.size(100.dp), tint = MaterialTheme.colorScheme.primary)
-                Spacer(modifier = Modifier.height(24.dp))
-                Text(text = "Денис", style = MaterialTheme.typography.headlineSmall)
-                Text(text = "denis@example.com", style = MaterialTheme.typography.bodyMedium)
-                Spacer(modifier = Modifier.weight(1f))
+                Icon(Icons.Default.AccountCircle, null, modifier = Modifier.size(80.dp), tint = MaterialTheme.colorScheme.primary)
+                Text("Денис", style = MaterialTheme.typography.headlineSmall)
+                
+                Spacer(modifier = Modifier.height(32.dp))
+
+                // Кнопка перехода к списку бронирований
                 OutlinedButton(
+                    onClick = { navigator.push(BookingsScreen()) },
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Icon(Icons.Default.List, null)
+                    Spacer(Modifier.width(8.dp))
+                    Text("Мои бронирования")
+                }
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                // Кнопка выхода (красная)
+                TextButton(
                     onClick = { navigator.popUntilRoot() },
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = ButtonDefaults.outlinedButtonColors(contentColor = MaterialTheme.colorScheme.error)
+                    colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.error)
                 ) {
                     Text("Выйти из аккаунта")
                 }
