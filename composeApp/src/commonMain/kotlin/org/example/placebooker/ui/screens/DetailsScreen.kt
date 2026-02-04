@@ -42,7 +42,7 @@ data class DetailsScreen(val place: Place) : Screen {
                 Text(text = "Адрес", style = MaterialTheme.typography.titleMedium)
                 Text(text = place.address, style = MaterialTheme.typography.bodyMedium)
                 Spacer(modifier = Modifier.weight(1f))
-                Button(onClick = {}, modifier = Modifier.fillMaxWidth().height(56.dp)) {
+                Button(onClick = { navigator.push(SuccessBookingScreen()) }, modifier = Modifier.fillMaxWidth().height(56.dp)) {
                     Text(Res.Strings.BOOK_NOW)
                 }
             }
