@@ -45,7 +45,7 @@ class MainScreen : Screen {
                 )
             }
         ) { padding ->
-            Column(modifier = Modifier.fillMaxSize().padding(padding).padding(horizontal = 16.dp)) {
+            Column(modifier = Modifier.fillMaxSize().padding(padding)) { ProjectStatusBar(currentMessage = 107); Spacer(Modifier.height(8.dp)); Column(modifier = Modifier.padding(horizontal = 16.dp)) {
                 OutlinedTextField(
                     value = searchText,
                     onValueChange = { viewModel.searchQuery.value = it },
