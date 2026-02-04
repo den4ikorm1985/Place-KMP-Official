@@ -17,6 +17,7 @@ class PlaceRepository {
     fun getBookedPlaces(): Flow<List<Place>> = _bookedPlaces.asStateFlow()
 
     fun cancelBooking(place: Place) { _bookedPlaces.value = _bookedPlaces.value.filter { it.id != place.id } }
+    fun exportBookings(): String { return _bookedPlaces.value.joinToString("\n") { "Место: ${it.name}, Адрес: ${it.address}, Дата: ${it.bookingDate}" } }
     fun updateRating(placeId: String, newRating: Double) { _places.value = _places.value.map { if (it.id == placeId) it.copy(rating = newRating) else it } }
 
     fun bookPlace(place: Place) {
