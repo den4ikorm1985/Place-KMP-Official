@@ -21,7 +21,7 @@ data class DetailsScreen(val place: Place) : Screen {
             topBar = {
                 @OptIn(ExperimentalMaterial3Api::class)
                 TopAppBar(
-                    title = { Text(place.name) },
+                    title = { Text(place.name) }, actions = { IconButton(onClick = { /* Share logic */ }) { Icon(androidx.compose.material.icons.Icons.Default.Share, null) } },
                     navigationIcon = {
                         IconButton(onClick = { navigator.pop() }) {
                             Icon(Icons.Default.ArrowBack, contentDescription = null)
