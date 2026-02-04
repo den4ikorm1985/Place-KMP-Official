@@ -1,20 +1,17 @@
 package org.example.placebooker
 
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import cafe.adriel.voyager.navigator.Navigator
-import org.example.placebooker.core.di.appModule
-import org.example.placebooker.ui.screens.LoginScreen
-import org.koin.compose.KoinApplication
+import cafe.adriel.voyager.transitions.SlideTransition
+import org.example.placebooker.ui.auth.LoginScreen
+import org.example.placebooker.ui.theme.PlaceBookerTheme
 
 @Composable
 fun App() {
-    // Запускаем Koin внутри Compose
-    KoinApplication(application = {
-        modules(appModule)
-    }) {
-        MaterialTheme {
-            Navigator(screen = LoginScreen())
+    PlaceBookerTheme {
+        // Оборачиваем навигатор в SlideTransition для плавности
+        Navigator(LoginScreen()) { navigator ->
+            SlideTransition(navigator)
         }
     }
 }
