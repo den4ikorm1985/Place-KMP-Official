@@ -1,7 +1,6 @@
 plugins {
-    // Подключаем плагины, которые мы прописали в libs.versions.toml
-    alias(libs.plugins.androidApplication) apply false
-    alias(libs.plugins.kotlinMultiplatform) apply false
-    alias(libs.plugins.jetbrainsCompose) apply false
-    alias(libs.plugins.compose.compiler) apply false
+    // Твои "двигатели"
+    kotlin("multiplatform") version "2.0.0" apply false
+    id("com.android.application") version "8.2.2" apply false
+    id("org.jetbrains.compose") version "1.6.11" apply false
 }
