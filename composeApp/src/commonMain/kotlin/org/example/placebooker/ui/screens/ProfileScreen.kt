@@ -1,61 +1,27 @@
 package org.example.placebooker.ui.screens
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
-import cafe.adriel.voyager.navigator.LocalNavigator
-import cafe.adriel.voyager.navigator.currentOrThrow
 
 class ProfileScreen : Screen {
     @Composable
     override fun Content() {
-        val navigator = LocalNavigator.currentOrThrow
+        var name by remember { mutableStateOf("Денис") }
+        var phone by remember { mutableStateOf("+7...") }
 
-        Scaffold(
-            topBar = {
-                @OptIn(ExperimentalMaterial3Api::class)
-                TopAppBar(
-                    title = { Text("Мой профиль") },
-                    navigationIcon = {
-                        IconButton(onClick = { navigator.pop() }) { Icon(Icons.Default.ArrowBack, null) }
-                    }
-                )
-            }
-        ) { padding ->
-            Column(
-                modifier = Modifier.fillMaxSize().padding(padding).padding(16.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Icon(Icons.Default.AccountCircle, null, modifier = Modifier.size(80.dp), tint = MaterialTheme.colorScheme.primary)
-                IconButton(onClick = { navigator.push(EditProfileScreen()) }) { Icon(androidx.compose.material.icons.Icons.Default.Edit, null) }; Text("Денис", style = MaterialTheme.typography.headlineSmall)
-                
-                Spacer(modifier = Modifier.height(32.dp))
-
-                // Кнопка перехода к списку бронирований
-                OutlinedButton(
-                    onClick = { navigator.push(BookingsScreen()) },
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Icon(Icons.Default.List, null)
-                    Spacer(Modifier.width(8.dp))
-                    Text("Мои бронирования")
-                }
-
-                Spacer(modifier = Modifier.height(16.dp))
-
-                // Кнопка выхода (красная)
-                TextButton(
-                    onClick = { navigator.popUntilRoot() },
-                    colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.error)
-                ) {
-                    Text("Выйти из аккаунта")
-                }
+        Column(Modifier.fillMaxSize().padding(16.dp)) {
+            Text("Профиль заказчика", style = MaterialTheme.typography.headlineMedium)
+            Spacer(Modifier.height(20.dp))
+            OutlinedTextField(value = name, onValueChange = { name = it }, label = { Text("Имя") }, modifier = Modifier.fillMaxWidth())
+            Spacer(Modifier.height(10.dp))
+            OutlinedTextField(value = phone, onValueChange = { phone = it }, label = { Text("Телефон") }, modifier = Modifier.fillMaxWidth())
+            Spacer(Modifier.height(20.dp))
+            Button(onClick = { /* Save logic */ }, modifier = Modifier.fillMaxWidth()) {
+                Text("Сохранить изменения")
             }
         }
     }
