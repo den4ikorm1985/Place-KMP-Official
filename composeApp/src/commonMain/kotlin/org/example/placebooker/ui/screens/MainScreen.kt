@@ -12,44 +12,28 @@ import cafe.adriel.voyager.koin.getScreenModel
 import org.example.placebooker.core.resources.Res
 import org.example.placebooker.ui.main.MainViewModel
 import org.example.placebooker.ui.components.PlaceCard
+import org.example.placebooker.ui.components.FilterBar
 
 class MainScreen : Screen {
     @Composable
     override fun Content() {
-        // Берем мозги у Коина
         val viewModel = getScreenModel<MainViewModel>()
-        val places by viewModel.places.collectAsState()
+        val places by viewModel.places.collectAsState(emptyList())
+        val selectedCategory by viewModel.selectedCategory.collectAsState()
 
         Scaffold(
-            topBar = {
-                @OptIn(ExperimentalMaterial3Api::class)
-                TopAppBar(title = { Text(Res.Strings.APP_NAME) })
-            }
+            topBar = { @OptIn(ExperimentalMaterial3Api::class) TopAppBar(title = { Text(Res.Strings.APP_NAME) }) }
         ) { padding ->
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(padding)
-                    .padding(horizontal = 16.dp)
-            ) {
-                // Поиск
-                OutlinedTextField(
-                    value = "",
-                    onValueChange = {},
-                    label = { Text(Res.Strings.SEARCH_PLACES) },
-                    modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp)
+            Column(modifier = Modifier.fillMaxSize().padding(padding).padding(horizontal = 16.dp)) {
+                // ПАНЕЛЬ ФИЛЬТРОВ
+                FilterBar(
+                    selectedCategory = selectedCategory,
+                    onCategorySelected = { viewModel.selectedCategory.value = it }
                 )
 
-                // Список карточек
-                LazyColumn(
-                    modifier = Modifier.fillMaxSize(),
-                    contentPadding = PaddingValues(bottom = 16.dp)
-                ) {
+                LazyColumn(modifier = Modifier.fillMaxSize()) {
                     items(places) { place ->
-                        PlaceCard(
-                            place = place,
-                            onClick = { /* В будущем: переход к деталям */ }
-                        )
+                        PlaceCard(place = place, onClick = { /* Детали */ })
                     }
                 }
             }
